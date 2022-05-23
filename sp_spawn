@@ -1,0 +1,30 @@
+#define SC_INCLUDE_DYNAMIC_PROCESSES
+#include <systemc>
+using namespace sc_core;
+using namespace std;
+
+SC_MODULE(DYN_PROCESS) 
+{
+  sc_event e;
+  SC_CTOR(DYN_PROCESS) 
+  {
+    SC_METHOD(trig_spawn);
+
+  }
+  void spawned_th(bool value) 
+  {
+      cout << "spawned_th successfuly spawned with value: "
+             << value << endl;
+  }
+  void trig_spawn() 
+  {
+	sc_spawn( sc_bind(&DYN_PROCESS::spawned_th, this, true) );
+  }
+
+};
+int sc_main(int, char*[])
+ {
+  DYN_PROCESS event("Dynamic Process");
+  sc_start(8, SC_SEC);
+  return 0;
+}
